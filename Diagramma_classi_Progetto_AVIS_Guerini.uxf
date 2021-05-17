@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>410</x>
+      <y>260</y>
+      <w>330</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>AVIS
+--
+-elencoDonatori:Donatore[]
+-N_MAX_DONATORI:int
+--
++AVIS()
++aggiungiDonatore()
++eliminaDonatore()
++effettuaDonazione()
++visualizzaDonatoriOrdineAlfabetico()
++visualizzaDonatoriNDonazioniEffettuate(int n)
++esportaInCSV()
++salvaAVIS()
++caricaAVIS()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>260</y>
+      <w>330</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>Donatore
+--
+-numeroTessera:int
+-cognome:String
+-nome:String
+-dataDiNascita:LocalDate
+-nDonazioniEffettuate:int
+--
++Donatore(numeroTessera:int,
+cognome:String,nome:String,
+anno:int,mese:int,giorno:int)
++Donatore(d:Donatore)
++getNumeroTessera():int
++setNumeroTessera(numeroTessera:int)
++getCognome():String
++setCognome(cognome:String)
++getNome():String
++setNome(nome:String)
++getDataDiNascita():LocalDate
++setDataDiNascita(dataDiNascita:LocalDate)
+getNDonazioniEffettuate():int
++setNDonazioniEffettuate(nDonazioniEffettuate:int)
++toString():String</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
