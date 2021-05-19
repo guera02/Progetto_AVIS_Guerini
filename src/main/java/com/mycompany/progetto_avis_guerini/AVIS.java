@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author stocc
+ * @author Guerini
  */
 public class AVIS implements Serializable
 {
@@ -140,18 +140,41 @@ public class AVIS implements Serializable
             writer.flush();
             writer.close();
         }
-    
-    public Donatore caricaDonatori(String nomeFile) throws IOException, FileException
+      public AVIS caricaDonatori(String nomeFile) throws IOException, FileException
+  {
+      AVIS a;
+      FileInputStream f1=new FileInputStream(nomeFile);
+      ObjectInputStream reader=new ObjectInputStream(f1);
+      
+       try 
+       {
+           a=(AVIS)reader.readObject();
+           reader.close();
+           return a;
+       } 
+       catch (ClassNotFoundException ex) 
+       {
+           reader.close();
+           throw new FileException("Errore di lettura");
+       }   
+  }
+    /*public AVIS caricaDonatori(String nomeFile) throws IOException, FileException
     {
-        Donatore d;
+        AVIS a=null;
         FileInputStream f1=new FileInputStream(nomeFile);
         ObjectInputStream reader=new ObjectInputStream(f1);
         
         try
         {
-            d=(Donatore)reader.readObject();
+            for(int i=0;i<N_MAX_DONATORI;i++)
+            {
+                if(elencoDonatori[i]!=null)
+                {
+                    a=(AVIS)reader.readObject();
+                }    
+            }
             reader.close();
-            return d;
+            return a;
         }
         catch(ClassNotFoundException e1)
         {
@@ -159,7 +182,7 @@ public class AVIS implements Serializable
             throw new FileException("Errore di lettura.");
         }
         
-    }
+    }*/
     
     @Override
    public String toString() 

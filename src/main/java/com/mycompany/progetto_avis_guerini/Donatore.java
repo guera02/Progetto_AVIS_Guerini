@@ -11,8 +11,9 @@ import java.time.Month;
 
 /**
  *
- * @author stocc
+ * @author Guerini
  */
+
 public class Donatore implements Serializable
 {
     //attributi

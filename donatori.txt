@@ -1,1 +1,2 @@
-0;Guerini;Angelo;2002-06-06;2;
+0;Guerini;Angelo;2002-06-06;0;
+1;Pippo;Pippa;2007-03-07;0;
