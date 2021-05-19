@@ -7,7 +7,11 @@ package com.mycompany.progetto_avis_guerini;
 
 import com.mycompany._libro.eccezioni.*;
 import com.mycompany.progetto_avis_guerini.file.TextFile;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -46,6 +50,7 @@ public class AVIS implements Serializable
         {
             if(elencoDonatori[i]==null)
             {
+                d.setNumeroTessera(i);
                 elencoDonatori[i]=new Donatore(d);
                 break;
             }     
@@ -58,14 +63,14 @@ public class AVIS implements Serializable
             elencoDonatori[posizione]=null;
     }
     
-    public void aggiungiDonazione(int posizione)
+    public void aggiungiDonazione(int posizione) throws eccezionePosizioneNonValida
     {
         int n;
         Donatore d;
         
         for(int i=posizione;i<N_MAX_DONATORI;i++)
         {
-            if(elencoDonatori[posizione]==null)
+            if(elencoDonatori[posizione].getCognome()=="")
                 break;
             else
             {
@@ -93,7 +98,7 @@ public class AVIS implements Serializable
         }
     }
     
-    public Donatore[] visualizzaDonatoriOrdineAlfabetico() throws eccezionePosizioneNonValida
+    public Donatore[] visualizzaDonatoriOrdineAlfabetico()
     {
         Donatore[] copia=new Donatore[elencoDonatori.length];
         Donatore d;
@@ -124,6 +129,36 @@ public class AVIS implements Serializable
                     f1.toFile(i+";"+d.getCognome()+";"+d.getNome()+";"+d.getDataDiNascita()+";"+d.getnDonazioniEffettuate()+";");
         }
         f1.close();
+    }
+    
+        public void salvaDonatori(String nomeFile) throws IOException
+        {
+            FileOutputStream f1=new FileOutputStream(nomeFile);
+            ObjectOutputStream writer=new ObjectOutputStream(f1);
+
+            writer.writeObject(this);
+            writer.flush();
+            writer.close();
+        }
+    
+    public Donatore caricaDonatori(String nomeFile) throws IOException, FileException
+    {
+        Donatore d;
+        FileInputStream f1=new FileInputStream(nomeFile);
+        ObjectInputStream reader=new ObjectInputStream(f1);
+        
+        try
+        {
+            d=(Donatore)reader.readObject();
+            reader.close();
+            return d;
+        }
+        catch(ClassNotFoundException e1)
+        {
+            reader.close();
+            throw new FileException("Errore di lettura.");
+        }
+        
     }
     
     @Override

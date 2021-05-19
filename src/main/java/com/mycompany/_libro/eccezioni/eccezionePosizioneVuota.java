@@ -11,18 +11,11 @@ package com.mycompany._libro.eccezioni;
  */
 public class eccezionePosizioneVuota extends Exception
 {
-    private int ripiano;
     private int posizione;
 
-    public eccezionePosizioneVuota(int ripiano, int posizione)
+    public eccezionePosizioneVuota(int posizione)
     {
-        this.ripiano=ripiano;
         this.posizione=posizione;
-    }
-    
-    public int getRipiano() 
-    {
-        return ripiano;
     }
 
     public int getPosizione() 
@@ -33,7 +26,7 @@ public class eccezionePosizioneVuota extends Exception
     public String toString()
     {
         String s="";
-        s+="La posizione: Ripiano "+getRipiano()+";Posizione: "+getPosizione()+" è vuota.";
+        s+="La posizione: "+getPosizione()+" è vuota.";
         return s;
     }
     

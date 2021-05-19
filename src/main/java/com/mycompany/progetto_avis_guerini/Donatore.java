@@ -5,6 +5,7 @@
  */
 package com.mycompany.progetto_avis_guerini;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -12,7 +13,7 @@ import java.time.Month;
  *
  * @author stocc
  */
-public class Donatore 
+public class Donatore implements Serializable
 {
     //attributi
     private int numeroTessera;

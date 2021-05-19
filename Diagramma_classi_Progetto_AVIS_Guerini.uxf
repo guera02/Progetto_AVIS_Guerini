@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>410</x>
-      <y>260</y>
+      <x>660</x>
+      <y>200</y>
       <w>330</w>
       <h>360</h>
     </coordinates>
@@ -15,22 +15,24 @@
 -N_MAX_DONATORI:int
 --
 +AVIS()
++getDonatore(posizione:int):Donatore
 +aggiungiDonatore()
 +eliminaDonatore()
 +effettuaDonazione()
 +visualizzaDonatoriOrdineAlfabetico()
-+visualizzaDonatoriNDonazioniEffettuate(int n)
++visualizzaDonatoriNDonazioniEffettuate(n:int)
 +esportaInCSV()
 +salvaAVIS()
 +caricaAVIS()
++toString():String
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>260</y>
+      <x>250</x>
+      <y>200</y>
       <w>330</w>
       <h>360</h>
     </coordinates>
