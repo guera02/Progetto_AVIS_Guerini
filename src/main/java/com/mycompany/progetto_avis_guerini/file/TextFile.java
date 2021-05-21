@@ -5,7 +5,7 @@
  */
 package com.mycompany.progetto_avis_guerini.file;
 
-import com.mycompany._libro.eccezioni.FileException;
+import com.mycompany.progetto_avis_guerini.eccezioni.FileException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;

@@ -5,7 +5,9 @@
  */
 package com.mycompany.progetto_avis_guerini;
 
-import com.mycompany._libro.eccezioni.*;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneVuota;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneNonValida;
+import com.mycompany.progetto_avis_guerini.eccezioni.FileException;
 import com.mycompany.progetto_avis_guerini.file.TextFile;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,19 +17,33 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- *
+ * Classe che permette di istanziare un'associazione AVIS, che contiene 
+ * tutti i donatori presenti.<br>
+ * La classe AVIS ha 2 attributi che sono:<br>
+ * <b>elencoDonatori</b>, un array di donatori;<br>
+ * <b>N_MAX_DONATORI</b>, il numero massimo di donatori che può contenere l'AVIS: di default
+ * il numero massimo è impostato a 100.
  * @author Guerini
+ * @version 1.0
  */
 public class AVIS implements Serializable
 {
     private Donatore[] elencoDonatori;
     private final int N_MAX_DONATORI=100;
     
+    /**
+     * Metodo costruttore della classe AVIS, che istanzia l'array di donatori.
+     */
     public AVIS()
     {
         elencoDonatori=new Donatore[N_MAX_DONATORI];
     }
     
+    /**
+     * Metodo che restituisce il donatore in una posizione nell'array.
+     * @param posizione la posizione in cui si trova il donatore desiderato.
+     * @return il donatore prescelto.
+     */
     public Donatore getDonatore(int posizione)
     {
         Donatore d=new Donatore();
@@ -44,7 +60,11 @@ public class AVIS implements Serializable
         return d;
     }
     
-    public void aggiungiDonatore(Donatore d) throws ArrayIndexOutOfBoundsException
+    /**
+     * Metodo che permette di aggiungere un donatore all'AVIS.
+     * @param d il donatore che si vuole aggiungere.
+     */
+    public void aggiungiDonatore(Donatore d)
     {
         for(int i=0;i<N_MAX_DONATORI;i++)
         {
@@ -57,12 +77,25 @@ public class AVIS implements Serializable
         }
     }
     
+    /**
+     * Metodo che, sapendo una posizione nota, va a cercare se nell'array elencoDonatori
+     * è presente un donatore ed eventualmente procederà all'eliminazione di
+     * quest'ultimo.
+     * @param posizione la posizione del donatore che si intende eliminare.
+     */
     public void eliminaDonatore(int posizione) throws eccezionePosizioneNonValida, eccezionePosizioneVuota
     {
         if(elencoDonatori[posizione]!=null)
             elencoDonatori[posizione]=null;
     }
     
+    /**
+     * Metodo che, sapendo la posizione del donatore, va ad aggiungere una donazione,
+     *  incrementando la variabile nDonazioniEffettuate e visualizzando i dati del 
+     * donatore che ha effettuato la donazione.<br>
+     * @param posizione la posizione del donatore cui si intende voler fare una
+     * donazione.<br>
+     */
     public void aggiungiDonazione(int posizione) throws eccezionePosizioneNonValida
     {
         int n;
@@ -74,16 +107,23 @@ public class AVIS implements Serializable
                 break;
             else
             {
-                n=elencoDonatori[posizione].getnDonazioniEffettuate();
+                n=elencoDonatori[posizione].getNDonazioniEffettuate();
                 d=elencoDonatori[posizione];
                 n++;
-                elencoDonatori[posizione].setnDonazioniEffettuate(n);
+                elencoDonatori[posizione].setNDonazioniEffettuate(n);
                 System.out.println(d.toString());
                 break;
             }
         }
     }
     
+    /**
+     * Metodo che permette di visualizzare i donatori in base ad un numero
+     * minimo di nDonazioniEffettuate. Perciò, se il numero minimo passato per
+     * parametro è 2, metterà a schermo tutti i donatori che hanno svolto <b>almeno</b>
+     * 2 donazioni.<br>
+     * @param n il numero minimo di donazioni per soddisfare il requisito.
+     */
     public void visualizzaDonatoriNDonazioniEffettuate(int n)
     {
         for(int i=0;i<N_MAX_DONATORI;i++)
@@ -92,12 +132,18 @@ public class AVIS implements Serializable
                 break;
             else
             {
-                if(elencoDonatori[i].getnDonazioniEffettuate()>=n)
+                if(elencoDonatori[i].getNDonazioniEffettuate()>=n)
                     System.out.println(elencoDonatori[i].toString());
             }
         }
     }
     
+    /**
+     * Metodo che permette di visualizzare tutti i donatori presenti all'interno
+     * dell'AVIS in ordine alfabetico, prima in base al cognome, e poi in base al
+     * nome.<br>
+     * @return un array di donatori ordinati in ordine alfabetico.
+     */
     public Donatore[] visualizzaDonatoriOrdineAlfabetico()
     {
         Donatore[] copia=new Donatore[elencoDonatori.length];
@@ -118,7 +164,12 @@ public class AVIS implements Serializable
         return copia;
     }
     
-    public void esportaLibriCSV(String nomeFile) throws IOException, eccezionePosizioneNonValida, FileException
+    /**
+     * Metodo che consente di esportare i donatori di un'associazione AVIS in
+     * formato CSV.
+     * @param nomeFile il nome del file di testo.<br>
+     */
+    public void esportaInCSV(String nomeFile) throws IOException, eccezionePosizioneNonValida, FileException
     {
         TextFile f1=new TextFile(nomeFile, 'w');
         Donatore d;
@@ -126,66 +177,52 @@ public class AVIS implements Serializable
         {
             d=getDonatore(i);
             if(d.getCognome()!="")
-                    f1.toFile(i+";"+d.getCognome()+";"+d.getNome()+";"+d.getDataDiNascita()+";"+d.getnDonazioniEffettuate()+";");
+                    f1.toFile(i+";"+d.getCognome()+";"+d.getNome()+";"+d.getDataDiNascita()+";"+d.getNDonazioniEffettuate()+";");
         }
         f1.close();
     }
     
-        public void salvaDonatori(String nomeFile) throws IOException
-        {
-            FileOutputStream f1=new FileOutputStream(nomeFile);
-            ObjectOutputStream writer=new ObjectOutputStream(f1);
-
-            writer.writeObject(this);
-            writer.flush();
-            writer.close();
-        }
-      public AVIS caricaDonatori(String nomeFile) throws IOException, FileException
-  {
-      AVIS a;
-      FileInputStream f1=new FileInputStream(nomeFile);
-      ObjectInputStream reader=new ObjectInputStream(f1);
-      
-       try 
-       {
-           a=(AVIS)reader.readObject();
-           reader.close();
-           return a;
-       } 
-       catch (ClassNotFoundException ex) 
-       {
-           reader.close();
-           throw new FileException("Errore di lettura");
-       }   
-  }
-    /*public AVIS caricaDonatori(String nomeFile) throws IOException, FileException
+    /**
+     * Metodo che permette di salvare i donatori su un file binario.
+     * @param nomeFile il nome del file binario.<br>
+     */
+    public void salvaDonatori(String nomeFile) throws IOException
     {
-        AVIS a=null;
+        FileOutputStream f1=new FileOutputStream(nomeFile);
+        ObjectOutputStream writer=new ObjectOutputStream(f1);
+
+        writer.writeObject(this);
+        writer.flush();
+        writer.close();
+    }
+    
+    /**
+     * Metodo che permette di leggere dal file binario i donatori e caricarli
+     * all'avvio dell'applicazione.
+     * @param nomeFile il nome del file binario.<br>
+     * @return l'associazione AVIS.<br>
+     */
+    public AVIS caricaDonatori(String nomeFile) throws IOException, FileException
+    {
+        AVIS a;
         FileInputStream f1=new FileInputStream(nomeFile);
         ObjectInputStream reader=new ObjectInputStream(f1);
-        
-        try
+
+        try 
         {
-            for(int i=0;i<N_MAX_DONATORI;i++)
-            {
-                if(elencoDonatori[i]!=null)
-                {
-                    a=(AVIS)reader.readObject();
-                }    
-            }
+            a=(AVIS)reader.readObject();
             reader.close();
             return a;
-        }
-        catch(ClassNotFoundException e1)
+        } 
+        catch (ClassNotFoundException ex) 
         {
             reader.close();
-            throw new FileException("Errore di lettura.");
-        }
-        
-    }*/
+            throw new FileException("Errore di lettura");
+        }   
+    }
     
-    @Override
-   public String toString() 
+   @Override
+    public String toString() 
     {
         String s="";
         Donatore d;

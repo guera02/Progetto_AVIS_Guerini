@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany._libro.eccezioni;
+package com.mycompany.progetto_avis_guerini.eccezioni;
 
 /**
  *

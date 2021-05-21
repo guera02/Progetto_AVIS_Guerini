@@ -3,28 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany._libro.eccezioni;
+package com.mycompany.progetto_avis_guerini.eccezioni;
 
 /**
  *
  * @author stocc
  */
-public class eccezionePosizioneNonVuota extends Exception
+public class eccezionePosizioneNonValida extends Exception
 {
-    private int ripiano;
     private int posizione;
 
-    public eccezionePosizioneNonVuota(int ripiano, int posizione)
+    public eccezionePosizioneNonValida(int posizione)
     {
-        this.ripiano=ripiano;
         this.posizione=posizione;
     }
     
-    public int getRipiano() 
-    {
-        return ripiano;
-    }
-
     public int getPosizione() 
     {
         return posizione;
@@ -33,7 +26,7 @@ public class eccezionePosizioneNonVuota extends Exception
     public String toString()
     {
         String s="";
-        s+="La posizione: Ripiano "+getRipiano()+";Posizione: "+getPosizione()+" non è vuota.";
+        s+="Posizione: "+getPosizione()+" non è valida.";
         return s;
     }
     

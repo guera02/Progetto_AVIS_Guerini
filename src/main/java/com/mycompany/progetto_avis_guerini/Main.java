@@ -5,9 +5,9 @@
  */
 package com.mycompany.progetto_avis_guerini;
 
-import com.mycompany._libro.eccezioni.FileException;
-import com.mycompany._libro.eccezioni.eccezionePosizioneNonValida;
-import com.mycompany._libro.eccezioni.eccezionePosizioneVuota;
+import com.mycompany.progetto_avis_guerini.eccezioni.FileException;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneNonValida;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneVuota;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -177,7 +177,7 @@ public class Main implements Serializable
                     {
                         try 
                         {
-                            a.esportaLibriCSV(nomeFile);
+                            a.esportaInCSV(nomeFile);
                             System.out.println("Salvataggio avvenuto correttamente!");
                         }
                         catch (IOException ex) 
