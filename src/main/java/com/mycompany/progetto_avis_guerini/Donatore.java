@@ -5,6 +5,7 @@
  */
 package com.mycompany.progetto_avis_guerini;
 
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezioneCognomeNome;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -106,8 +107,14 @@ public class Donatore implements Serializable
      * Metodo che serve per assegnare il cognome di un donatore.
      * @param cognome il cognome che si vuole attribuire ad uno specifico donatore.
      */
-    public void setCognome(String cognome) 
+    public void setCognome(String cognome) throws eccezioneCognomeNome
     {
+        for(int i=0;i<cognome.length();i++)
+        {
+            if(cognome.charAt(i)=='0' || cognome.charAt(i)=='1' || cognome.charAt(i)=='2' || cognome.charAt(i)=='3' || cognome.charAt(i)=='4' || cognome.charAt(i)=='5' || cognome.charAt(i)=='6' || cognome.charAt(i)=='7' || cognome.charAt(i)=='8' || cognome.charAt(i)=='9')
+                throw new eccezioneCognomeNome("Il cognome non è valido.");
+        }
+        
         this.cognome = cognome;
     }
 
@@ -124,8 +131,14 @@ public class Donatore implements Serializable
      * Metodo che consente di assegnare un nome ad uno specifico donatore.
      * @param nome il nome che si vuole attribuire al donatore scelto.
      */
-    public void setNome(String nome) 
+    public void setNome(String nome) throws eccezioneCognomeNome
     {
+        for(int i=0;i<nome.length();i++)
+        {
+            if(nome.charAt(i)=='0' || nome.charAt(i)=='1' || nome.charAt(i)=='2' || nome.charAt(i)=='3' || nome.charAt(i)=='4' || nome.charAt(i)=='5' || nome.charAt(i)=='6' || nome.charAt(i)=='7' || nome.charAt(i)=='8' || nome.charAt(i)=='9')
+                throw new eccezioneCognomeNome("Il nome non è valido.");
+        }
+        
         this.nome = nome;
     }
 
@@ -171,5 +184,15 @@ public class Donatore implements Serializable
         return "Donatore{" + "numeroTessera=" + numeroTessera + ", cognome=" + cognome + ", nome=" + nome + ", dataDiNascita=" + dataDiNascita + ", nDonazioniEffettuate=" + nDonazioniEffettuate + '}';
     }
     
-    
+    @Override
+    public boolean equals(Object d)
+    {
+        Donatore d1;
+        d1=(Donatore)d;
+        
+        if(d1.getCognome()==getCognome() && d1.getNome()==getNome() && d1.getDataDiNascita()==getDataDiNascita() && d1.getNumeroTessera()==getNumeroTessera() && d1.getNDonazioniEffettuate()==getNDonazioniEffettuate())
+            return true;
+        else
+            return false;
+    }
 }

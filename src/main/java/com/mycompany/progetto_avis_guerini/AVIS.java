@@ -8,6 +8,7 @@ package com.mycompany.progetto_avis_guerini;
 import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneVuota;
 import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneNonValida;
 import com.mycompany.progetto_avis_guerini.eccezioni.FileException;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezioneAVISvuota;
 import com.mycompany.progetto_avis_guerini.file.TextFile;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,6 +40,12 @@ public class AVIS implements Serializable
         elencoDonatori=new Donatore[N_MAX_DONATORI];
     }
     
+    public void setDonatore(Donatore d, int posizione)
+    {
+        if(elencoDonatori[posizione]==null)
+            elencoDonatori[posizione]=new Donatore(d);
+    }
+    
     /**
      * Metodo che restituisce il donatore in una posizione nell'array.
      * @param posizione la posizione in cui si trova il donatore desiderato.
@@ -64,17 +71,22 @@ public class AVIS implements Serializable
      * Metodo che permette di aggiungere un donatore all'AVIS.
      * @param d il donatore che si vuole aggiungere.
      */
-    public void aggiungiDonatore(Donatore d)
+    public void aggiungiDonatore(Donatore d) throws ArrayIndexOutOfBoundsException
     {
+        int n=0;
         for(int i=0;i<N_MAX_DONATORI;i++)
         {
             if(elencoDonatori[i]==null)
             {
+                n++;
                 d.setNumeroTessera(i);
                 elencoDonatori[i]=new Donatore(d);
                 break;
             }     
         }
+        
+        if(n==N_MAX_DONATORI)
+            throw new ArrayIndexOutOfBoundsException();
     }
     
     /**
@@ -87,6 +99,8 @@ public class AVIS implements Serializable
     {
         if(elencoDonatori[posizione]!=null)
             elencoDonatori[posizione]=null;
+        else
+            throw new eccezionePosizioneVuota(posizione);
     }
     
     /**
@@ -124,8 +138,10 @@ public class AVIS implements Serializable
      * 2 donazioni.<br>
      * @param n il numero minimo di donazioni per soddisfare il requisito.
      */
-    public void visualizzaDonatoriNDonazioniEffettuate(int n)
+    public void visualizzaDonatoriNDonazioniEffettuate(int n) throws eccezioneAVISvuota
     {
+        int t=0;
+        
         for(int i=0;i<N_MAX_DONATORI;i++)
         {
             if(elencoDonatori[i]==null)
@@ -133,9 +149,14 @@ public class AVIS implements Serializable
             else
             {
                 if(elencoDonatori[i].getNDonazioniEffettuate()>=n)
+                {
                     System.out.println(elencoDonatori[i].toString());
+                    t++;
+                }       
             }
         }
+        if(t==0)
+            throw new eccezioneAVISvuota("Nessun donatore con "+n+" donazioni effettuate.");
     }
     
     /**
@@ -144,22 +165,29 @@ public class AVIS implements Serializable
      * nome.<br>
      * @return un array di donatori ordinati in ordine alfabetico.
      */
-    public Donatore[] visualizzaDonatoriOrdineAlfabetico()
+    public Donatore[] visualizzaDonatoriOrdineAlfabetico() throws eccezioneAVISvuota
     {
         Donatore[] copia=new Donatore[elencoDonatori.length];
         Donatore d;
         int c=0;
+        int n=0;
         
         for(int i=0;i<N_MAX_DONATORI;i++)
         {
             d=getDonatore(i);
-            if(d.getCognome()!="")
+            if(d.getCognome()=="")
+            {
+                n++;
+            }
+            else
             {
                 copia[c]=d;
                 c++;
             }
         }
         
+        if(n==100)
+            throw new eccezioneAVISvuota("Nessun donatore presente.");
         copia=Ordinatore.selectionSortAlfabeticoCognomeNome(copia);
         return copia;
     }

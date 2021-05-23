@@ -6,6 +6,8 @@
 package com.mycompany.progetto_avis_guerini;
 
 import com.mycompany.progetto_avis_guerini.eccezioni.FileException;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezioneAVISvuota;
+import com.mycompany.progetto_avis_guerini.eccezioni.eccezioneCognomeNome;
 import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneNonValida;
 import com.mycompany.progetto_avis_guerini.eccezioni.eccezionePosizioneVuota;
 import java.io.IOException;
@@ -28,6 +30,7 @@ public class Main implements Serializable
         final int N_MAX_DONATORI=100;
         int giorno,mese,anno,posizione,nDonazioniEffettuate;
         Donatore d;
+        Donatore d1=new Donatore(5, "Peppino", "Giuseppini", 2003, 6, 8);
         Donatore[] elencoDonatori=new Donatore[N_MAX_DONATORI];
         LocalDate dataDiNascita;
         AVIS a=new AVIS();
@@ -73,11 +76,21 @@ public class Main implements Serializable
                     case 1: //aggiunta di un donatore
                     {
                         d=new Donatore();
-
-                        System.out.println("Inserisci il cognome del donatore:");
-                        d.setCognome(tastiera.nextLine());
-                        System.out.println("Inserisci il nome del donatore:");
-                        d.setNome(tastiera.nextLine());
+                        try
+                        {
+                            System.out.println("Inserisci il cognome del donatore:");
+                            d.setCognome(tastiera.nextLine());
+                            System.out.println("Inserisci il nome del donatore:");
+                            d.setNome(tastiera.nextLine());
+                        }
+                        catch(eccezioneCognomeNome e1)
+                        {
+                            System.out.println(e1.toString());
+                            System.out.println("\nPremi un pulsante per continuare...");
+                            tastiera.nextLine();
+                            break;
+                        }
+                        
                         System.out.println("Inserisci il giorno di nascita del donatore:");
                         giorno=tastiera.nextInt();
                         System.out.println("Inserisci il mese di nascita del donatore:");
@@ -87,7 +100,17 @@ public class Main implements Serializable
                         dataDiNascita=LocalDate.of(anno, mese, giorno);
                         d.setDataDiNascita(dataDiNascita);
 
-                        a.aggiungiDonatore(d);
+                        try
+                        {
+                            a.aggiungiDonatore(d);
+                        }
+                        catch(ArrayIndexOutOfBoundsException e1)
+                        {
+                            System.out.println("Raggiunto il massimo numero di donatori disponibili...");
+                            System.out.println("\nPremi un pulsante per continuare...");
+                            tastiera.nextLine();
+                            break;
+                        }
 
                         System.out.println("Inserimento avvenuto correttamente!\n");
                         tastiera.nextLine();
@@ -104,6 +127,13 @@ public class Main implements Serializable
                             a.eliminaDonatore(posizione);
                             System.out.println("Eliminazione avvenuta con successo!");
                         } 
+                        catch(ArrayIndexOutOfBoundsException ex)
+                        {
+                            System.out.println("Posizione fuori dai limiti massimi!");
+                            System.out.println("\nPremi un pulsante per continuare...");
+                            tastiera.nextLine();
+                            break;
+                        }
                         catch (eccezionePosizioneNonValida ex) 
                         {
                             System.out.println(ex.toString());
@@ -123,7 +153,15 @@ public class Main implements Serializable
                     {
                         System.out.println("Inserisci il codice identificativo del donatore di cui si vuole effettuare una donazione: ");
                         posizione=tastiera.nextInt();
-
+                        if(posizione>N_MAX_DONATORI)
+                        {
+                            System.out.println("Il numero "+posizione+" non è valido.");
+                            tastiera.nextLine();
+                            System.out.println("Premere un pulsante per continuare...");
+                            tastiera.nextLine();
+                            break;
+                        }
+             
                         try
                         {
                             a.aggiungiDonazione(posizione);
@@ -145,7 +183,7 @@ public class Main implements Serializable
                         break;
                     }
                     case 4: //visualizza donatori in ordine alfabetico
-                    {
+                    {             
                         try
                         {
                             elencoDonatori=a.visualizzaDonatoriOrdineAlfabetico();
@@ -158,6 +196,10 @@ public class Main implements Serializable
                         {
 
                         }
+                        catch(eccezioneAVISvuota e2)
+                        {
+                            System.out.println(e2.toString());
+                        }
 
                         System.out.println("\nPremere un pulsante per continuare...");
                         tastiera.nextLine();
@@ -167,8 +209,16 @@ public class Main implements Serializable
                     {
                         System.out.println("Inserisci il numero minimo di donazioni che soddisfano il requisito: ");
                         nDonazioniEffettuate=tastiera.nextInt();
-                        a.visualizzaDonatoriNDonazioniEffettuate(nDonazioniEffettuate);
+                        try
+                        {
+                            a.visualizzaDonatoriNDonazioniEffettuate(nDonazioniEffettuate);
+                        }
+                        catch(eccezioneAVISvuota e1)
+                        {
+                            System.out.println(e1.toString());
+                        }
 
+                        tastiera.nextLine();
                         System.out.println("\nPremere un pulsante per continuare...");
                         tastiera.nextLine();
                         break;
@@ -214,7 +264,8 @@ public class Main implements Serializable
             catch(InputMismatchException | NumberFormatException e2)
             {
                 tastiera.nextLine();
-                System.out.println("Input non corretto");
+                System.out.println("Input non corretto... Ritorno al menù principale!");
+                tastiera.nextLine();
             }
         }while(sceltaUtente!=0);
         
