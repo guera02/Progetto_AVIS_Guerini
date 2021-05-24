@@ -197,16 +197,21 @@ public class AVIS implements Serializable
      * formato CSV.
      * @param nomeFile il nome del file di testo.<br>
      */
-    public void esportaInCSV(String nomeFile) throws IOException, eccezionePosizioneNonValida, FileException
+    public void esportaInCSV(String nomeFile) throws IOException, eccezionePosizioneNonValida, FileException, eccezioneAVISvuota
     {
         TextFile f1=new TextFile(nomeFile, 'w');
         Donatore d;
+        int n=0;
         for(int i=0;i<N_MAX_DONATORI;i++)
         {
             d=getDonatore(i);
             if(d.getCognome()!="")
                     f1.toFile(i+";"+d.getCognome()+";"+d.getNome()+";"+d.getDataDiNascita()+";"+d.getNDonazioniEffettuate()+";");
+            else
+                n++;
         }
+        if(n==N_MAX_DONATORI)
+            throw new eccezioneAVISvuota("Nessun donatore presente: impossibile esportare.");
         f1.close();
     }
     
@@ -214,8 +219,16 @@ public class AVIS implements Serializable
      * Metodo che permette di salvare i donatori su un file binario.
      * @param nomeFile il nome del file binario.<br>
      */
-    public void salvaDonatori(String nomeFile) throws IOException
+    public void salvaDonatori(String nomeFile) throws IOException, eccezioneAVISvuota
     {
+        int n=0;
+        for(int i=0;i<N_MAX_DONATORI;i++)
+        {
+            if(elencoDonatori[i]==null)
+                n++;
+        }
+        if(n==N_MAX_DONATORI)
+            throw new eccezioneAVISvuota("Nessun donatore presente: impossibile salvare i donatori.");
         FileOutputStream f1=new FileOutputStream(nomeFile);
         ObjectOutputStream writer=new ObjectOutputStream(f1);
 

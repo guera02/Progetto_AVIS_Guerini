@@ -238,6 +238,10 @@ public class Main implements Serializable
                         {
                             System.out.println(ex.toString());
                         } 
+                        catch(eccezioneAVISvuota e1)
+                        {
+                            System.out.println(e1.toString());
+                        }
 
                         System.out.println("\nPremere un pulsante per continuare...");
                         tastiera.nextLine();
@@ -253,6 +257,10 @@ public class Main implements Serializable
                         catch (IOException ex) 
                         {
                             System.out.println("Impossibile accedere al file: i donatori non sono stati salvati.");
+                        }
+                        catch(eccezioneAVISvuota e1)
+                        {
+                            System.out.println(e1.toString());
                         }
 
                         System.out.println("\nPremere un pulsante per continuare...");
